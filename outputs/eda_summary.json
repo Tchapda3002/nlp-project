@@ -1,0 +1,9 @@
+{
+  "total_cv": 169,
+  "n_categories": 25,
+  "avg_length_chars": 2949.1360946745563,
+  "avg_length_words": 418.85207100591714,
+  "most_common_category": "Java Developer",
+  "least_common_category": "PMO",
+  "class_imbalance_ratio": 4.666666666666667
+}

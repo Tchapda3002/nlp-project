@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide Architecture - Classification CV</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 50px;
+            text-align: center;
+        }
+        header h1 { font-size: 3em; margin-bottom: 15px; }
+        .content { padding: 50px; }
+        .section { margin-bottom: 60px; }
+        .section h2 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 4px solid #667eea;
+        }
+        .file-card {
+            background: white;
+            border: 3px solid #667eea;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .file-card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        .step {
+            background: #f7fafc;
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .step-number {
+            background: #667eea;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        .alert {
+            background: #fef3c7;
+            border-left: 5px solid #f59e0b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .success {
+            background: #d1fae5;
+            border-left: 5px solid #10b981;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        table tr:hover { background: #f7fafc; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1> GUIDE COMPLET</h1>
+            <p style="font-size: 1.3em;">Architecture et Ordre d'Exécution - Classification de CV</p>
+            <p style="margin-top: 10px; opacity: 0.9;">Pour Jupyter Notebook uniquement</p>
+        </header>
+        
+        <div class="content">
+            <!-- SECTION 1: VUE D'ENSEMBLE -->
+            <section class="section">
+                <h2> 1. Vue d'Ensemble du Projet</h2>
+                
+                <div class="success">
+                    <h3 style="color: #065f46; margin-bottom: 10px;"> Objectif du Projet</h3>
+                    <p><strong>Créer un système de classification automatique de CV</strong> qui prédit la catégorie/métier d'un CV en utilisant du NLP et du Machine Learning.</p>
+                </div>
+                
+                <h3 style="margin-top: 30px; color: #f5576c;"> Workflow Global</h3>
+                <div style="display: flex; align-items: center; gap: 20px; margin: 20px 0; flex-wrap: wrap;">
+                    <div style="background: #dbeafe; padding: 15px; border-radius: 8px; flex: 1; min-width: 150px; text-align: center;">
+                        <strong>1. Données Brutes</strong><br>CSV de CV
+                    </div>
+                    <span style="font-size: 2em; color: #667eea;">→</span>
+                    <div style="background: #fef3c7; padding: 15px; border-radius: 8px; flex: 1; min-width: 150px; text-align: center;">
+                        <strong>2. Prétraitement</strong><br>Nettoyage texte
+                    </div>
+                    <span style="font-size: 2em; color: #667eea;">→</span>
+                    <div style="background: #d1fae5; padding: 15px; border-radius: 8px; flex: 1; min-width: 150px; text-align: center;">
+                        <strong>3. Features</strong><br>TF-IDF
+                    </div>
+                    <span style="font-size: 2em; color: #667eea;">→</span>
+                    <div style="background: #fce7f3; padding: 15px; border-radius: 8px; flex: 1; min-width: 150px; text-align: center;">
+                        <strong>4. Modélisation</strong><br>ML + MLflow
+                    </div>
+                    <span style="font-size: 2em; color: #667eea;">→</span>
+                    <div style="background: #e0e7ff; padding: 15px; border-radius: 8px; flex: 1; min-width: 150px; text-align: center;">
+                        <strong>5. API</strong><br>Déploiement
+                    </div>
+                </div>
+            </section>
+            
+            <!-- SECTION 2: STRUCTURE -->
+            <section class="section">
+                <h2> 2. Structure Complète du Projet</h2>
+                
+                <div class="code-block">
+<pre>cv-classification-nlp/
+│
+├── <span style="color: #fbbf24;">notebooks/</span>              <span style="color: #68d391;"># Vous exécutez TOUT depuis ici</span>
+│   ├── 01_EDA.ipynb                    <span style="color: #68d391;"># Exploration données</span>
+│   ├── 02_preprocessing.ipynb          <span style="color: #68d391;"># Nettoyage texte</span>
+│   ├── 03_feature_extraction.ipynb     <span style="color: #68d391;"># TF-IDF</span>
+│   ├── 04_modeling.ipynb               <span style="color: #68d391;"># Entraînement + MLflow</span>
+│   ├── 05_API_testing.ipynb            <span style="color: #68d391;"># Tests API</span>
+│   └── 06_evaluation.ipynb             <span style="color: #68d391;"># Évaluation finale</span>
+│
+├── <span style="color: #fbbf24;">data/</span>
+│   ├── raw/
+│   │   └── resume_dataset.csv          <span style="color: #68d391;"># Dataset original (À PLACER ICI)</span>
+│   ├── processed/
+│   │   ├── resume_cleaned.csv          <span style="color: #68d391;"># Généré par notebook 02</span>
+│   │   └── X_features.npz              <span style="color: #68d391;"># Généré par notebook 03</span>
+│   └── predictions/
+│
+├── <span style="color: #fbbf24;">models_saved/</span>
+│   ├── best_model.pkl                  <span style="color: #68d391;"># Généré par notebook 04</span>
+│   ├── tfidf_vectorizer.pkl            <span style="color: #68d391;"># Généré par notebook 03</span>
+│   └── label_encoder.pkl               <span style="color: #68d391;"># Généré par notebook 04</span>
+│
+├── <span style="color: #fbbf24;">outputs/</span>
+│   ├── plots/                          <span style="color: #68d391;"># Graphiques générés</span>
+│   └── reports/                        <span style="color: #68d391;"># Rapports générés</span>
+│
+└── <span style="color: #fbbf24;">api/</span>
+    └── main.py                         <span style="color: #68d391;"># API FastAPI (exécutée en dernier)</span>
+</pre>
+                </div>
+            </section>
+            
+            <!-- SECTION 3: ORDRE D'EXÉCUTION -->
+            <section class="section">
+                <h2> 3. ORDRE D'EXÉCUTION (Jupyter uniquement)</h2>
+                
+                <div class="alert">
+                    <h3 style="color: #92400e; margin-bottom: 10px;"> IMPORTANT</h3>
+                    <p><strong>Vous DEVEZ exécuter les notebooks dans cet ordre exact.</strong></p>
+                    <p>Chaque notebook dépend des fichiers créés par le précédent.</p>
+                </div>
+                
+                <!-- Jour 1 -->
+                <div class="step">
+                    <h3 style="color: #667eea; margin-bottom: 15px;">
+                        <span class="step-number">1</span>
+                        JOUR 1 : Setup Initial
+                    </h3>
+                    <p><strong>Durée:</strong> 30 minutes</p>
+                    <p><strong>Action:</strong> Préparer l'environnement</p>
+                    <div class="code-block" style="margin-top: 10px;">
+# Dans le terminal (pas Jupyter)
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python -c "import nltk; nltk.download('stopwords'); nltk.download('wordnet'); nltk.download('punkt')"
+                    </div>
+                    <p style="margin-top: 10px;"><strong> Résultat:</strong> Environnement prêt</p>
+                </div>
+                
+                <!-- Notebook 01 -->
+                <div class="file-card" style="border-color: #3b82f6;">
+                    <h3> 01_EDA.ipynb - Exploration des Données</h3>
+                    <p><strong> Emplacement:</strong> <code>notebooks/01_EDA.ipynb</code></p>
+                    <p><strong> Durée:</strong> 1-2 heures</p>
+                    <p><strong> Input:</strong> <code>data/raw/resume_dataset.csv</code></p>
+                    <p><strong> Output:</strong></p>
+                    <ul style="margin-left: 25px; margin-top: 10px;">
+                        <li>Graphiques dans <code>outputs/plots/</code></li>
+                        <li><code>outputs/eda_summary.json</code></li>
+                        <li><code>data/processed/resume_with_stats.csv</code></li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong> Ce qu'il fait:</strong></p>
+                    <ul style="margin-left: 25px;">
+                        <li>Charge et analyse le CSV</li>
+                        <li>Affiche statistiques (nb CV, catégories, longueurs)</li>
+                        <li>Crée des visualisations (distributions, wordclouds)</li>
+                        <li>Identifie les déséquilibres de classes</li>
+                    </ul>
+                    <div class="success" style="margin-top: 15px;">
+                        <strong> Quand c'est OK:</strong> Vous voyez les graphiques et comprenez la distribution des données
+                    </div>
+                </div>
+                
+                <!-- Notebook 02 -->
+                <div class="file-card" style="border-color: #10b981;">
+                    <h3> 02_preprocessing.ipynb - Nettoyage du Texte</h3>
+                    <p><strong> Emplacement:</strong> <code>notebooks/02_preprocessing.ipynb</code></p>
+                    <p><strong> Durée:</strong> 30 minutes - 1 heure</p>
+                    <p><strong> Input:</strong> <code>data/raw/resume_dataset.csv</code></p>
+                    <p><strong> Output:</strong></p>
+                    <ul style="margin-left: 25px; margin-top: 10px;">
+                        <li><strong style="color: #ef4444;">data/processed/resume_cleaned.csv</strong> ← IMPORTANT</li>
+                        <li><code>outputs/plots/cleaning_impact.png</code></li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong> Ce qu'il fait:</strong></p>
+                    <ul style="margin-left: 25px;">
+                        <li>Supprime URLs, emails, ponctuation</li>
+                        <li>Lemmatisation des mots</li>
+                        <li>Suppression stopwords</li>
+                        <li>Crée colonne "cleaned_text"</li>
+                    </ul>
+                    <div class="success" style="margin-top: 15px;">
+                        <strong> Quand c'est OK:</strong> Le fichier <code>resume_cleaned.csv</code> existe avec une colonne "cleaned_text"
+                    </div>
+                </div>
+                
+                <!-- Notebook 03 -->
+                <div class="file-card" style="border-color: #f59e0b;">
+                    <h3> 03_feature_extraction.ipynb - TF-IDF</h3>
+                    <p><strong> Emplacement:</strong> <code>notebooks/03_feature_extraction.ipynb</code></p>
+                    <p><strong> Durée:</strong> 30 minutes - 1 heure</p>
+                    <p><strong> Input:</strong> <code>data/processed/resume_cleaned.csv</code></p>
+                    <p><strong> Output:</strong></p>
+                    <ul style="margin-left: 25px; margin-top: 10px;">
+                        <li><strong style="color: #ef4444;">data/processed/X_features.npz</strong> ← IMPORTANT</li>
+                        <li><strong style="color: #ef4444;">models_saved/tfidf_vectorizer.pkl</strong> ← IMPORTANT</li>
+                        <li><code>outputs/plots/top_features.png</code></li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong> Ce qu'il fait:</strong></p>
+                    <ul style="margin-left: 25px;">
+                        <li>Transforme texte en vecteurs numériques TF-IDF</li>
+                        <li>Crée matrice de 5000 features</li>
+                        <li>Sauvegarde le vectorizer pour réutilisation</li>
+                    </ul>
+                    <div class="success" style="margin-top: 15px;">
+                        <strong> Quand c'est OK:</strong> Les fichiers .npz et .pkl existent dans leurs dossiers
+                    </div>
+                </div>
+                
+                <!-- MLflow -->
+                <div class="alert" style="background: #fef3c7; margin: 30px 0;">
+                    <h3 style="color: #92400e; margin-bottom: 10px;"> ÉTAPE CRITIQUE: Lancer MLflow</h3>
+                    <p><strong>AVANT d'exécuter le notebook 04, ouvrez un NOUVEAU terminal et lancez:</strong></p>
+                    <div class="code-block" style="margin-top: 10px;">
+mlflow server --host 127.0.0.1 --port 5000
+                    </div>
+                    <p style="margin-top: 10px;"> Laissez ce terminal <strong>ouvert</strong> pendant toute la modélisation</p>
+                    <p> Accédez à l'interface: <strong>http://localhost:5000</strong></p>
+                </div>
+                
+                <!-- Notebook 04 -->
+                <div class="file-card" style="border-color: #ec4899;">
+                    <h3> 04_modeling.ipynb - Entraînement avec MLflow</h3>
+                    <p><strong> Emplacement:</strong> <code>notebooks/04_modeling.ipynb</code></p>
+                    <p><strong> Durée:</strong> 2-3 heures (selon la taille des données)</p>
+                    <p><strong> Input:</strong></p>
+                    <ul style="margin-left: 25px; margin-top: 10px;">
+                        <li><code>data/processed/resume_cleaned.csv</code></li>
+                        <li><code>data/processed/X_features.npz</code></li>
+                    </ul>
+                    <p><strong> Output:</strong></p>
+                    <ul style="margin-left: 25px; margin-top: 10px;">
+                        <li><strong style="color: #ef4444;">models_saved/best_model.pkl</strong> ← IMPORTANT</li>
+                        <li><strong style="color: #ef4444;">models_saved/label_encoder.pkl</strong> ← IMPORTANT</li>
+                        <li>Expériences loggées dans MLflow</li>
+                        <li><code>outputs/plots/*_confusion_matrix.png</code></li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong> Ce qu'il fait:</strong></p>
+                    <ul style="margin-left: 25px;">
+                        <li>Entraîne 5 modèles ML (Logistic, Random Forest, etc.)</li>
+                        <li>Compare les performances</li>
+                        <li>Log tout dans MLflow</li>
+                        <li>Sauvegarde le meilleur modèle</li>
+                    </ul>
+                    <div class="success" style="margin-top: 15px;">
+                        <strong> Quand c'est OK:</strong> Vous voyez 5 expériences dans MLflow et best_model.pkl existe
+                    </div>
+                </div>
+                
+                <!-- Notebook 05 -->
+                <div class="file-card" style="border-color: #8b5cf6;">
+                    <h3> 06_evaluation.ipynb - Évaluation Finale</h3>
+                    <p><strong> Emplacement:</strong> <code>notebooks/06_evaluation.ipynb</code></p>
+                    <p><strong> Durée:</strong> 30 minutes</p>
+                    <p><strong> Input:</strong> Tous les modèles sauvegardés</p>
+                    <p><strong> Output:</strong></p>
+                    <ul style="margin-left: 25px; margin-top: 10px;">
+                        <li><code>outputs/reports/final_evaluation_report.txt</code></li>
+                        <li>Graphiques d'évaluation détaillés</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong> Ce qu'il fait:</strong></p>
+                    <ul style="margin-left: 25px;">
+                        <li>Analyse en profondeur du meilleur modèle</li>
+                        <li>Matrice de confusion détaillée</li>
+                        <li>Analyse des erreurs</li>
+                        <li>Performance par catégorie</li>
+                    </ul>
+                </div>
+                
+                <!-- API -->
+                <div class="file-card" style="border-color: #06b6d4;">
+                    <h3> API - Déploiement (Optionnel)</h3>
+                    <p><strong> Emplacement:</strong> <code>api/main.py</code></p>
+                    <p><strong> À faire APRÈS tous les notebooks</strong></p>
+                    <div class="code-block" style="margin-top: 10px;">
+# Dans un NOUVEAU terminal
+cd api
+uvicorn main:app --reload --port 8000
+                    </div>
+                    <p style="margin-top: 10px;"> API accessible sur: <strong>http://localhost:8000/docs</strong></p>
+                    <p><strong> Puis exécutez:</strong> <code>notebooks/05_API_testing.ipynb</code> pour tester</p>
+                </div>
+            </section>
+            
+            <!-- SECTION 4: CHECKLIST -->
+            <section class="section">
+                <h2> 4. Checklist de Progression</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 50px;">✓</th>
+                            <th>Étape</th>
+                            <th>Fichier Créé</th>
+                            <th>Comment Vérifier</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>☐</td>
+                            <td>Setup</td>
+                            <td>Environnement venv</td>
+                            <td>Packages installés</td>
+                        </tr>
+                        <tr>
+                            <td>☐</td>
+                            <td>01_EDA</td>
+                            <td>outputs/plots/*.png</td>
+                            <td>Graphiques visibles</td>
+                        </tr>
+                        <tr>
+                            <td>☐</td>
+                            <td>02_preprocessing</td>
+                            <td>data/processed/resume_cleaned.csv</td>
+                            <td>Fichier existe avec colonne "cleaned_text"</td>
+                        </tr>
+                        <tr>
+                            <td>☐</td>
+                            <td>03_features</td>
+                            <td>data/processed/X_features.npz<br>models_saved/tfidf_vectorizer.pkl</td>
+                            <td>2 fichiers existent</td>
+                        </tr>
+                        <tr>
+                            <td>☐</td>
+                            <td>MLflow lancé</td>
+                            <td>-</td>
+                            <td>http://localhost:5000 accessible</td>
+                        </tr>
+                        <tr>
+                            <td>☐</td>
+                            <td>04_modeling</td>
+                            <td>models_saved/best_model.pkl<br>models_saved/label_encoder.pkl</td>
+                            <td>2 fichiers + expériences dans MLflow</td>
+                        </tr>
+                        <tr>
+                            <td>☐</td>
+                            <td>06_evaluation</td>
+                            <td>outputs/reports/final_evaluation_report.txt</td>
+                            <td>Rapport généré</td>
+                        </tr>
+                        <tr>
+                            <td>☐</td>
+                            <td>API (optionnel)</td>
+                            <td>-</td>
+                            <td>http://localhost:8000/docs accessible</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            
+            <!-- SECTION 5: FAQ -->
+            <section class="section">
+                <h2> 5. Questions Fréquentes</h2>
+                
+                <div style="background: #f7fafc; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                    <h4 style="color: #667eea;">Q: Puis-je sauter un notebook ?</h4>
+                    <p><strong>R:</strong> NON. Chaque notebook dépend des fichiers créés par le précédent. Vous DEVEZ les exécuter dans l'ordre.</p>
+                </div>
+                
+                <div style="background: #f7fafc; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                    <h4 style="color: #667eea;">Q: Où placer mon fichier resume_dataset.csv ?</h4>
+                    <p><strong>R:</strong> Dans <code>data/raw/resume_dataset.csv</code> AVANT d'exécuter le notebook 01.</p>
+                </div>
+                
+                <div style="background: #f7fafc; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                    <h4 style="color: #667eea;">Q: MLflow est-il obligatoire ?</h4>
+                    <p><strong>R:</strong> OUI pour le notebook 04. Il track toutes vos expériences et permet de comparer les modèles.</p>
+                </div>
+                
+                <div style="background: #f7fafc; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                    <h4 style="color: #667eea;">Q: Combien de temps total ?</h4>
+                    <p><strong>R:</strong> Environ 6-8 heures réparties sur 2-3 jours pour tout exécuter et comprendre.</p>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>
