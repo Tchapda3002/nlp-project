@@ -176,12 +176,12 @@ class TestModelInfoEndpoint:
         assert "n_features" in data
         assert "n_categories" in data
 
-    def test_model_is_gradient_boosting(self, client):
-        """Test que le modèle est Gradient Boosting"""
+    def test_model_is_random_forest(self, client):
+        """Test que le modèle est Random Forest"""
         response = client.get("/model-info")
         data = response.json()
 
-        assert data["model_type"] == "GradientBoostingClassifier"
+        assert data["model_type"] == "RandomForestClassifier"
 
 
 class TestBatchPredictEndpoint:
