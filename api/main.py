@@ -513,7 +513,7 @@ def root():
 
     return {
         "message": "CV Classification API - Version Anti Data-Leakage",
-        "version": "2.1.0",
+        "version": "2.2.0",
         "status": "running",
         "mode": "pipeline" if USE_PIPELINE else "legacy",
         "features": {
@@ -540,7 +540,7 @@ def get_config():
     return {
         "api_url": os.environ.get("API_URL", ""),
         "app_name": "CV Classifier",
-        "version": "2.1.0",
+        "version": "2.2.0",
         "environment": os.environ.get("ENVIRONMENT", "development")
     }
 
