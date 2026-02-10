@@ -1,4 +1,4 @@
-name: Deploy to EC2
+name: Test & Deploy to EC2
 
 on:
   push:
@@ -6,8 +6,53 @@ on:
       - main
 
 jobs:
-  deploy:
+  test:
+    name: Run Tests
     runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements-prod.txt
+          pip install pytest httpx
+
+      - name: Test API imports
+        run: |
+          python -c "from api.main import app; print('API imports OK')"
+
+      - name: Test model loading
+        run: |
+          python -c "
+          import pickle
+          p = pickle.load(open('models/cv_classifier_pipeline.pkl', 'rb'))
+          l = pickle.load(open('models/label_encoder.pkl', 'rb'))
+          print('Models load OK')
+          print('Categories:', len(l.classes_))
+          "
+
+      - name: Test prediction
+        run: |
+          python -c "
+          import pickle
+          p = pickle.load(open('models/cv_classifier_pipeline.pkl', 'rb'))
+          l = pickle.load(open('models/label_encoder.pkl', 'rb'))
+          pred = p.predict(['Software engineer with Python experience'])[0]
+          label = l.inverse_transform([pred])[0]
+          print('Prediction OK:', label)
+          "
+
+  deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+    needs: test
 
     steps:
       - name: Deploy to EC2
