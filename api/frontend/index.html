@@ -111,6 +111,38 @@
             border-radius: 50%;
         }
 
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .btn-api {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: var(--space-sm) var(--space-md);
+            background: var(--bg-card);
+            border: 1px solid var(--border-medium);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-api:hover {
+            background: var(--accent-gold);
+            border-color: var(--accent-gold);
+            color: var(--bg-primary);
+        }
+
+        .btn-api svg {
+            width: 14px;
+            height: 14px;
+        }
+
         /* Main Layout */
         main {
             max-width: 1400px;
@@ -841,9 +873,20 @@
             <div class="logo-icon">CV</div>
             <div class="logo-text">Talent<span>AI</span></div>
         </div>
-        <div class="status-indicator" id="apiStatus">
-            <div class="status-dot"></div>
-            <span>En ligne</span>
+        <div class="header-actions">
+            <div class="status-indicator" id="apiStatus">
+                <div class="status-dot"></div>
+                <span>En ligne</span>
+            </div>
+            <a href="/docs" target="_blank" class="btn-api">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                </svg>
+                API Docs
+            </a>
         </div>
     </header>
 
