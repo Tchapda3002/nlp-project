@@ -1076,7 +1076,22 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <script>
-        const API_URL = '';  // URL relative - fonctionne partout automatiquement
+        // Configuration dynamique - chargée depuis /config
+        let API_URL = '';  // Sera mis à jour par loadConfig()
+
+        // Charger la configuration depuis le serveur
+        async function loadConfig() {
+            try {
+                const response = await fetch('/config');
+                if (response.ok) {
+                    const config = await response.json();
+                    API_URL = config.api_url || '';
+                    console.log('Config loaded:', config);
+                }
+            } catch (error) {
+                console.log('Using default config (relative URLs)');
+            }
+        }
 
         // DOM Elements
         const dropZone = document.getElementById('dropZone');
@@ -1100,7 +1115,8 @@
         let currentCVText = null;
 
         // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadConfig();  // Charger la config en premier
             checkAPIStatus();
             loadModelInfo();
             setupEventListeners();

@@ -534,6 +534,16 @@ def root():
         }
     }
 
+@app.get("/config")
+def get_config():
+    """Configuration dynamique pour le frontend"""
+    return {
+        "api_url": os.environ.get("API_URL", ""),
+        "app_name": "CV Classifier",
+        "version": "2.1.0",
+        "environment": os.environ.get("ENVIRONMENT", "development")
+    }
+
 @app.get("/health", response_model=HealthResponse)
 def health():
     """Vérifier l'état de santé de l'API"""
