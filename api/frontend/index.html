@@ -876,7 +876,7 @@
         <div class="header-actions">
             <div class="status-indicator" id="apiStatus">
                 <div class="status-dot"></div>
-                <span>API à l'écoute</span>
+                <span>API en ligne</span>
             </div>
             <a href="/docs" target="_blank" class="btn-api">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1216,7 +1216,7 @@
                 const response = await fetch(`${API_URL}/health`);
                 const data = await response.json();
                 if (data.status === 'healthy') {
-                    status.innerHTML = '<div class="status-dot"></div><span>API à l'écoute</span>';
+                    status.innerHTML = '<div class="status-dot"></div><span>API en ligne</span>';
                     status.style.color = 'var(--success)';
                 }
             } catch (error) {
