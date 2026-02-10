@@ -31,9 +31,9 @@ jobs:
       - name: Test model loading
         run: |
           python -c "
-          import pickle
-          p = pickle.load(open('models/cv_classifier_pipeline.pkl', 'rb'))
-          l = pickle.load(open('models/label_encoder.pkl', 'rb'))
+          import joblib
+          p = joblib.load('models/cv_classifier_pipeline.pkl')
+          l = joblib.load('models/label_encoder.pkl')
           print('Models load OK')
           print('Categories:', len(l.classes_))
           "
@@ -41,9 +41,9 @@ jobs:
       - name: Test prediction
         run: |
           python -c "
-          import pickle
-          p = pickle.load(open('models/cv_classifier_pipeline.pkl', 'rb'))
-          l = pickle.load(open('models/label_encoder.pkl', 'rb'))
+          import joblib
+          p = joblib.load('models/cv_classifier_pipeline.pkl')
+          l = joblib.load('models/label_encoder.pkl')
           pred = p.predict(['Software engineer with Python experience'])[0]
           label = l.inverse_transform([pred])[0]
           print('Prediction OK:', label)
